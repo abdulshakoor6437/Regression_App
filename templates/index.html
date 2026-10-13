@@ -1,0 +1,1510 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RegressIQ • Enterprise Linear Regression Studio</title>
+  <meta name="description" content="State-of-the-art dual linear regression prediction engine for healthcare insurance charges and California housing valuation with real-time analytics.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1a2236;
+      --bg-card: rgba(22, 30, 49, 0.75);
+      --bg-card-hover: rgba(28, 38, 62, 0.9);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(99, 102, 241, 0.5);
+
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-light: rgba(99, 102, 241, 0.15);
+      --primary-glow: rgba(99, 102, 241, 0.35);
+
+      --accent-emerald: #10b981;
+      --accent-emerald-light: rgba(16, 185, 129, 0.15);
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-cyan: #06b6d4;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+
+      --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+      --shadow-glow: 0 0 35px -5px rgba(99, 102, 241, 0.25);
+      --glass-blur: blur(16px);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.04) 0%, transparent 60%);
+      background-attachment: fixed;
+    }
+
+    /* Header & Navigation */
+    header {
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(10, 14, 23, 0.82);
+      backdrop-filter: var(--glass-blur);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--primary), #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+
+    .brand-info h1 {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #ffffff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-info p {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .nav-tabs {
+      display: flex;
+      background: var(--bg-surface);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      padding: 9px 18px;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 12px var(--primary-glow);
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-emerald);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 10px var(--accent-emerald);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+    }
+
+    /* Tab Panels */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Split Grid for Predictors */
+    .app-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-subtle);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .icon-insurance {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .icon-housing {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .icon-analytics {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(244, 63, 94, 0.2));
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .card-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Preset Chips */
+    .presets-container {
+      margin-bottom: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .preset-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+    }
+
+    .preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .preset-btn {
+      padding: 6px 13px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .preset-btn:hover {
+      background: rgba(99, 102, 241, 0.12);
+      border-color: var(--primary);
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    /* Form Grids */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 640px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .value-pill {
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    input[type="number"], select {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 14.5px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input[type="number"]:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+      background: #1e293b;
+    }
+
+    /* Sliders */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: var(--bg-surface-elevated);
+      border-radius: 4px;
+      outline: none;
+      margin-top: 6px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--primary-glow);
+      transition: transform 0.15s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 15.5px;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+      box-shadow: 0 4px 18px var(--primary-glow);
+      transition: var(--transition);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.45);
+      background: linear-gradient(135deg, #4f46e5, #6d28d9);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Prediction Result Panel */
+    .result-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .result-card {
+      background: linear-gradient(145deg, rgba(17, 24, 39, 0.9), rgba(15, 23, 42, 0.95));
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      position: sticky;
+      top: 90px;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .result-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .prediction-value-wrap {
+      margin: 18px 0;
+      padding: 20px;
+      background: rgba(99, 102, 241, 0.06);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: var(--radius-md);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prediction-value-wrap::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent-emerald));
+    }
+
+    .prediction-subtext {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .prediction-amount {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(90deg, #ffffff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.15;
+    }
+
+    .stat-pills {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .stat-pill {
+      background: var(--bg-surface-elevated);
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .stat-pill-label {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    .stat-pill-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 2px;
+    }
+
+    .factor-insights {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .factor-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .factor-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .factor-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .factor-item span:first-child {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .factor-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .tag-high { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+    .tag-low { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .tag-med { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+    /* Analytics Dashboard */
+    .metrics-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .metrics-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .metrics-summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+    }
+
+    .metric-card.r2::before { background: var(--primary); }
+    .metric-card.mae::before { background: var(--accent-emerald); }
+    .metric-card.rmse::before { background: var(--accent-amber); }
+    .metric-card.samples::before { background: var(--accent-cyan); }
+
+    .metric-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+    }
+
+    .metric-val {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 6px 0 2px;
+      color: var(--text-main);
+    }
+
+    .metric-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 860px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chart-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      text-align: center;
+    }
+
+    .chart-box h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--text-main);
+      text-align: left;
+    }
+
+    .chart-box img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Coefficient Table */
+    .coef-table-wrap {
+      overflow-x: auto;
+      margin-top: 14px;
+    }
+
+    table.coef-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13.5px;
+    }
+
+    table.coef-table th {
+      padding: 10px 14px;
+      background: var(--bg-surface-elevated);
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    table.coef-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-main);
+    }
+
+    table.coef-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .coef-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .coef-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--primary);
+    }
+
+    /* Code block */
+    pre.code-block {
+      background: #090d16;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-dim);
+      background: rgba(10, 14, 23, 0.95);
+      margin-top: auto;
+    }
+
+    /* Interactive indicator */
+    .badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top App Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="/" class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div class="brand-info">
+          <h1>RegressIQ Studio</h1>
+          <p>Machine Learning Regression Lab</p>
+        </div>
+      </a>
+
+      <nav class="nav-tabs" id="mainTabs">
+        <button class="tab-btn active" data-tab="insurance-tab" id="btn-tab-insurance">
+          <i class="fa-solid fa-heart-pulse"></i> Insurance
+        </button>
+        <button class="tab-btn" data-tab="housing-tab" id="btn-tab-housing">
+          <i class="fa-solid fa-house-chimney"></i> California Housing
+        </button>
+        <button class="tab-btn" data-tab="analytics-tab" id="btn-tab-analytics">
+          <i class="fa-solid fa-chart-pie"></i> Metrics & EDA
+        </button>
+        <button class="tab-btn" data-tab="api-tab" id="btn-tab-api">
+          <i class="fa-solid fa-terminal"></i> API Specs
+        </button>
+      </nav>
+
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        <span>2 Models Trained</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- 1. TAB: INSURANCE -->
+    <div class="tab-content active" id="insurance-tab">
+      <div class="app-layout">
+        <!-- Form Section -->
+        <div class="glass-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon icon-insurance">
+                <i class="fa-solid fa-hospital-user"></i>
+              </div>
+              <div>
+                <h2 class="card-title">Healthcare Insurance Charges</h2>
+                <p class="card-subtitle">Linear regression model trained on demographic and lifestyle indicators</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Presets -->
+          <div class="presets-container">
+            <span class="preset-label">Test Scenarios / Quick Profiles:</span>
+            <div class="preset-chips">
+              <button class="preset-btn" onclick="setInsurancePreset(22, 'female', 21.5, 0, 'no', 'southwest')">
+                <i class="fa-solid fa-graduation-cap"></i> Healthy College Student ($2k)
+              </button>
+              <button class="preset-btn" onclick="setInsurancePreset(35, 'male', 26.8, 2, 'no', 'northwest')">
+                <i class="fa-solid fa-user-group"></i> Family Parent Non-Smoker ($6k)
+              </button>
+              <button class="preset-btn" onclick="setInsurancePreset(45, 'male', 32.4, 1, 'yes', 'southeast')">
+                <i class="fa-solid fa-triangle-exclamation"></i> Heavy Smoker with Obesity ($35k+)
+              </button>
+              <button class="preset-btn" onclick="setInsurancePreset(62, 'female', 28.0, 0, 'no', 'northeast')">
+                <i class="fa-solid fa-person-cane"></i> Senior Non-Smoker ($13k)
+              </button>
+            </div>
+          </div>
+
+          <!-- Predictor Form -->
+          <form id="insuranceForm" onsubmit="event.preventDefault(); predictInsurance();">
+            <div class="form-grid">
+              <!-- Age -->
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="ins_age">Age (Years)</label>
+                  <span class="value-pill" id="ins_age_val">30</span>
+                </div>
+                <input type="range" id="ins_age" min="18" max="65" value="30" step="1" oninput="updateVal('ins_age'); autoPredictIns();">
+              </div>
+
+              <!-- Sex -->
+              <div class="form-group">
+                <label for="ins_sex">Biological Sex</label>
+                <select id="ins_sex" onchange="autoPredictIns();">
+                  <option value="male" selected>Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+
+              <!-- BMI -->
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="ins_bmi">Body Mass Index (BMI)</label>
+                  <span class="value-pill" id="ins_bmi_val">25.0</span>
+                </div>
+                <input type="number" id="ins_bmi" step="0.1" min="15" max="55" value="25.0" oninput="updateBmiTag(); autoPredictIns();">
+                <span id="bmiTag" style="font-size:11.5px; color:#10b981; font-weight:600; margin-top:2px;">
+                  <i class="fa-solid fa-circle-check"></i> Normal Weight (18.5 - 24.9)
+                </span>
+              </div>
+
+              <!-- Children -->
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="ins_children">Number of Dependents / Children</label>
+                  <span class="value-pill" id="ins_children_val">0</span>
+                </div>
+                <input type="range" id="ins_children" min="0" max="5" value="0" step="1" oninput="updateVal('ins_children'); autoPredictIns();">
+              </div>
+
+              <!-- Smoker -->
+              <div class="form-group">
+                <label for="ins_smoker">Smoker Status (High Risk Factor)</label>
+                <select id="ins_smoker" onchange="updateSmokerNotice(); autoPredictIns();">
+                  <option value="no" selected>No (Non-Smoker)</option>
+                  <option value="yes">Yes (Active Smoker)</option>
+                </select>
+                <span id="smokerNotice" style="display:none; font-size:11.5px; color:#f43f5e; font-weight:600; margin-top:2px;">
+                  <i class="fa-solid fa-fire"></i> Primary driver: Adds ~$23,800 to annual base charge!
+                </span>
+              </div>
+
+              <!-- Region -->
+              <div class="form-group">
+                <label for="ins_region">US Geographic Region</label>
+                <select id="ins_region" onchange="autoPredictIns();">
+                  <option value="southwest" selected>Southwest</option>
+                  <option value="southeast">Southeast</option>
+                  <option value="northwest">Northwest</option>
+                  <option value="northeast">Northeast</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="btn-predict-ins">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Recalculate Charges
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Section -->
+        <div class="result-container">
+          <div class="result-card">
+            <div class="result-header">
+              <span class="result-badge">Predicted Outcome</span>
+              <span class="badge-live"><i class="fa-solid fa-bolt"></i> Real-time Active</span>
+            </div>
+
+            <div class="prediction-value-wrap">
+              <div class="prediction-subtext">Estimated Annual Insurance Premium</div>
+              <div class="prediction-amount" id="insResult">$4,166.59</div>
+            </div>
+
+            <div class="stat-pills">
+              <div class="stat-pill">
+                <div class="stat-pill-label">Estimated Monthly</div>
+                <div class="stat-pill-value" id="insMonthly">$347.22/mo</div>
+              </div>
+              <div class="stat-pill">
+                <div class="stat-pill-label">Risk Tier Category</div>
+                <div class="stat-pill-value" id="insRiskTier" style="color:#10b981;">Standard Low</div>
+              </div>
+            </div>
+
+            <div class="factor-insights">
+              <div class="factor-title">
+                <i class="fa-solid fa-sliders"></i> Key Feature Weighting
+              </div>
+              <div class="factor-list">
+                <div class="factor-item">
+                  <span><i class="fa-solid fa-smoking"></i> Smoker Status Impact</span>
+                  <span class="factor-tag tag-high" id="insFactorSmoker">None (+$0)</span>
+                </div>
+                <div class="factor-item">
+                  <span><i class="fa-solid fa-hourglass-half"></i> Age Incremental Rate</span>
+                  <span class="factor-tag tag-med">+$257 / year of age</span>
+                </div>
+                <div class="factor-item">
+                  <span><i class="fa-solid fa-weight-scale"></i> BMI Sensitivity</span>
+                  <span class="factor-tag tag-med">+$339 / BMI point</span>
+                </div>
+                <div class="factor-item">
+                  <span><i class="fa-solid fa-child"></i> Dependents Surcharge</span>
+                  <span class="factor-tag tag-low">+$475 / child</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TAB: CALIFORNIA HOUSING -->
+    <div class="tab-content" id="housing-tab">
+      <div class="app-layout">
+        <!-- Form Section -->
+        <div class="glass-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon icon-housing">
+                <i class="fa-solid fa-tree-city"></i>
+              </div>
+              <div>
+                <h2 class="card-title">California Housing Valuation</h2>
+                <p class="card-subtitle">Linear regression model trained on census blocks & geographic features</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Presets -->
+          <div class="presets-container">
+            <span class="preset-label">Test Census Block Scenarios:</span>
+            <div class="preset-chips">
+              <button class="preset-btn" onclick="setHousingPreset(-122.23, 37.88, 41, 880, 129, 322, 126, 8.32, 'NEAR BAY')">
+                <i class="fa-solid fa-water"></i> SF Bay Area Luxury ($410k+)
+              </button>
+              <button class="preset-btn" onclick="setHousingPreset(-118.45, 34.01, 30, 2500, 480, 1100, 450, 5.8, 'NEAR OCEAN')">
+                <i class="fa-solid fa-umbrella-beach"></i> SoCal Coastal Suburb ($315k)
+              </button>
+              <button class="preset-btn" onclick="setHousingPreset(-119.8, 36.75, 24, 2100, 410, 1200, 390, 2.8, 'INLAND')">
+                <i class="fa-solid fa-mountain-sun"></i> Central Valley Inland ($120k)
+              </button>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <form id="housingForm" onsubmit="event.preventDefault(); predictHousing();">
+            <div class="form-grid">
+              <!-- Longitude -->
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="house_lon">Longitude (°W)</label>
+                  <span class="value-pill" id="house_lon_val">-122.23</span>
+                </div>
+                <input type="number" id="house_lon" step="0.01" value="-122.23" oninput="autoPredictHouse();">
+              </div>
+
+              <!-- Latitude -->
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="house_lat">Latitude (°N)</label>
+                  <span class="value-pill" id="house_lat_val">37.88</span>
+                </div>
+                <input type="number" id="house_lat" step="0.01" value="37.88" oninput="autoPredictHouse();">
+              </div>
+
+              <!-- Median Income -->
+              <div class="form-group full-width">
+                <div class="label-row">
+                  <label for="house_inc">Median Area Income ($10,000s)</label>
+                  <span class="value-pill" id="house_inc_val">$83,200 ($8.32)</span>
+                </div>
+                <input type="range" id="house_inc" min="0.5" max="15.0" step="0.1" value="8.3" oninput="updateIncomeVal(); autoPredictHouse();">
+                <span style="font-size:11.5px; color:#10b981; font-weight:600; margin-top:2px;">
+                  <i class="fa-solid fa-circle-info"></i> Strongest predictor of home price in California
+                </span>
+              </div>
+
+              <!-- Housing Median Age -->
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="house_age">Housing Median Age</label>
+                  <span class="value-pill" id="house_age_val">30 yrs</span>
+                </div>
+                <input type="range" id="house_age" min="1" max="52" value="30" step="1" oninput="updateVal('house_age'); autoPredictHouse();">
+              </div>
+
+              <!-- Ocean Proximity -->
+              <div class="form-group">
+                <label for="house_ocean">Ocean Proximity</label>
+                <select id="house_ocean" onchange="autoPredictHouse();">
+                  <option value="<1H OCEAN">&lt;1H OCEAN (Coastal metro)</option>
+                  <option value="INLAND">INLAND (Valley / Rural)</option>
+                  <option value="NEAR BAY" selected>NEAR BAY (San Francisco Bay)</option>
+                  <option value="NEAR OCEAN">NEAR OCEAN (Direct Pacific)</option>
+                  <option value="ISLAND">ISLAND</option>
+                </select>
+              </div>
+
+              <!-- Total Rooms -->
+              <div class="form-group">
+                <label for="house_rooms">Total Block Rooms</label>
+                <input type="number" id="house_rooms" value="880" oninput="autoPredictHouse();">
+              </div>
+
+              <!-- Total Bedrooms -->
+              <div class="form-group">
+                <label for="house_bedrooms">Total Bedrooms</label>
+                <input type="number" id="house_bedrooms" value="129" oninput="autoPredictHouse();">
+              </div>
+
+              <!-- Population -->
+              <div class="form-group">
+                <label for="house_pop">Block Population</label>
+                <input type="number" id="house_pop" value="322" oninput="autoPredictHouse();">
+              </div>
+
+              <!-- Households -->
+              <div class="form-group">
+                <label for="house_hh">Block Households</label>
+                <input type="number" id="house_hh" value="126" oninput="autoPredictHouse();">
+              </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="btn-predict-house">
+              <i class="fa-solid fa-calculator"></i> Value Census Block
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Section -->
+        <div class="result-container">
+          <div class="result-card">
+            <div class="result-header">
+              <span class="result-badge">Median Home Value</span>
+              <span class="badge-live"><i class="fa-solid fa-bolt"></i> Real-time Active</span>
+            </div>
+
+            <div class="prediction-value-wrap">
+              <div class="prediction-subtext">Estimated Median Home Value</div>
+              <div class="prediction-amount" id="houseResult">$413,296.88</div>
+            </div>
+
+            <div class="stat-pills">
+              <div class="stat-pill">
+                <div class="stat-pill-label">Est. 30Y Mortgage (6.5%)</div>
+                <div class="stat-pill-value" id="houseMortgage">$2,612/mo</div>
+              </div>
+              <div class="stat-pill">
+                <div class="stat-pill-label">Rooms per Household</div>
+                <div class="stat-pill-value" id="houseRpH">6.98</div>
+              </div>
+            </div>
+
+            <div class="factor-insights">
+              <div class="factor-title">
+                <i class="fa-solid fa-map-location-dot"></i> Geographical & Demographics
+              </div>
+              <div class="factor-list">
+                <div class="factor-item">
+                  <span><i class="fa-solid fa-compass"></i> Coordinates Position</span>
+                  <span class="factor-tag tag-med" id="coordsPill">Lat 37.88, Lon -122.23</span>
+                </div>
+                <div class="factor-item">
+                  <span><i class="fa-solid fa-money-bill-trend-up"></i> Income Contribution</span>
+                  <span class="factor-tag tag-high">+$40k per Income Point</span>
+                </div>
+                <div class="factor-item">
+                  <span><i class="fa-solid fa-water"></i> Inland Discount vs Coast</span>
+                  <span class="factor-tag tag-high">-$40k Inland Penalty</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TAB: ANALYTICS & EDA -->
+    <div class="tab-content" id="analytics-tab">
+      <div class="glass-card" style="margin-bottom: 24px;">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon icon-analytics">
+              <i class="fa-solid fa-chart-simple"></i>
+            </div>
+            <div>
+              <h2 class="card-title">Model Performance & Dataset Analytics</h2>
+              <p class="card-subtitle">Comprehensive scikit-learn metrics, correlation matrices, and evaluation diagnostics</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="metrics-summary-grid">
+          <div class="metric-card r2">
+            <div class="metric-title">Insurance R² Score</div>
+            <div class="metric-val" id="kpi-ins-r2">0.7836</div>
+            <div class="metric-desc">Explains 78.4% of variance</div>
+          </div>
+
+          <div class="metric-card mae">
+            <div class="metric-title">Insurance MAE</div>
+            <div class="metric-val" id="kpi-ins-mae">$4,181</div>
+            <div class="metric-desc">Mean Absolute Error</div>
+          </div>
+
+          <div class="metric-card r2">
+            <div class="metric-title">Housing R² Score</div>
+            <div class="metric-val" id="kpi-house-r2">0.6253</div>
+            <div class="metric-desc">Explains 62.5% of variance</div>
+          </div>
+
+          <div class="metric-card rmse">
+            <div class="metric-title">Housing RMSE</div>
+            <div class="metric-val" id="kpi-house-rmse">$70,050</div>
+            <div class="metric-desc">Root Mean Squared Error</div>
+          </div>
+        </div>
+
+        <!-- EDA Visualizations Grid -->
+        <h3 style="margin: 24px 0 16px; font-size:17px; font-weight:700;"><i class="fa-solid fa-image"></i> Dataset Correlation Heatmaps & Fit Diagnostic Plots</h3>
+        <div class="charts-grid">
+          <div class="chart-box">
+            <h3>Insurance Feature Correlations</h3>
+            <img src="/static/img/insurance_corr.png" alt="Insurance Correlation Heatmap" onerror="this.src='https://placehold.co/600x400/1e293b/cbd5e1?text=Heatmap+Generating...'">
+          </div>
+
+          <div class="chart-box">
+            <h3>Insurance Actual vs. Predicted</h3>
+            <img src="/static/img/insurance_pred.png" alt="Insurance Actual vs Predicted" onerror="this.src='https://placehold.co/600x400/1e293b/cbd5e1?text=Scatter+Plot+Generating...'">
+          </div>
+
+          <div class="chart-box">
+            <h3>California Housing Feature Correlations</h3>
+            <img src="/static/img/housing_corr.png" alt="Housing Correlation Heatmap" onerror="this.src='https://placehold.co/600x400/1e293b/cbd5e1?text=Heatmap+Generating...'">
+          </div>
+
+          <div class="chart-box">
+            <h3>California Housing Actual vs. Predicted</h3>
+            <img src="/static/img/housing_pred.png" alt="Housing Actual vs Predicted" onerror="this.src='https://placehold.co/600x400/1e293b/cbd5e1?text=Scatter+Plot+Generating...'">
+          </div>
+        </div>
+
+        <!-- Learned Pipeline Features Table -->
+        <h3 style="margin: 28px 0 12px; font-size:17px; font-weight:700;"><i class="fa-solid fa-brain"></i> Machine Learning Preprocessing Architecture</h3>
+        <div class="stat-pills" style="margin-bottom: 20px;">
+          <div class="stat-pill">
+            <div class="stat-pill-label">Numeric Pipeline</div>
+            <div class="stat-pill-value" style="font-size:13.5px; font-family:'JetBrains Mono'">SimpleImputer(median) → StandardScaler()</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-pill-label">Categorical Pipeline</div>
+            <div class="stat-pill-value" style="font-size:13.5px; font-family:'JetBrains Mono'">OneHotEncoder(handle_unknown='ignore')</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. TAB: API DOCS -->
+    <div class="tab-content" id="api-tab">
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon" style="background:rgba(6,182,212,0.2); color:#22d3ee; border:1px solid rgba(6,182,212,0.3);">
+              <i class="fa-solid fa-code"></i>
+            </div>
+            <div>
+              <h2 class="card-title">REST API Specifications</h2>
+              <p class="card-subtitle">Seamless JSON endpoints for integrating predictions into any external client</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom: 10px; font-size:15px; color:#818cf8;"><i class="fa-solid fa-bolt"></i> 1. Predict Insurance Charges</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">Endpoint: <code>POST /api/predict/insurance</code></p>
+        <pre class="code-block">curl -X POST http://127.0.0.1:5000/api/predict/insurance \
+  -H "Content-Type: application/json" \
+  -d '{
+    "age": 30,
+    "sex": "male",
+    "bmi": 25.0,
+    "children": 0,
+    "smoker": "no",
+    "region": "southwest"
+  }'</pre>
+
+        <h3 style="margin: 24px 0 10px; font-size:15px; color:#34d399;"><i class="fa-solid fa-bolt"></i> 2. Predict California House Price</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">Endpoint: <code>POST /api/predict/housing</code></p>
+        <pre class="code-block">curl -X POST http://127.0.0.1:5000/api/predict/housing \
+  -H "Content-Type: application/json" \
+  -d '{
+    "longitude": -122.23,
+    "latitude": 37.88,
+    "housing_median_age": 41.0,
+    "total_rooms": 880,
+    "total_bedrooms": 129,
+    "population": 322,
+    "households": 126,
+    "median_income": 8.32,
+    "ocean_proximity": "NEAR BAY"
+  }'</pre>
+
+        <h3 style="margin: 24px 0 10px; font-size:15px; color:#fbbf24;"><i class="fa-solid fa-bolt"></i> 3. Retrieve Metrics & Model Parameters</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">Endpoint: <code>GET /api/metrics</code></p>
+        <pre class="code-block">curl http://127.0.0.1:5000/api/metrics</pre>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>RegressIQ Studio • Built with Python, Flask, Scikit-Learn Pipeline & ColumnTransformer</p>
+  </footer>
+
+  <script>
+    // Tab switching logic
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetTab = btn.getAttribute('data-tab');
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+
+        btn.classList.add('active');
+        const activeContent = document.getElementById(targetTab);
+        if (activeContent) activeContent.classList.add('active');
+      });
+    });
+
+    function updateVal(id) {
+      const el = document.getElementById(id);
+      const valEl = document.getElementById(id + '_val');
+      if (el && valEl) {
+        valEl.textContent = el.value;
+      }
+    }
+
+    function updateBmiTag() {
+      const bmi = parseFloat(document.getElementById('ins_bmi').value) || 25;
+      document.getElementById('ins_bmi_val').textContent = bmi.toFixed(1);
+      const tag = document.getElementById('bmiTag');
+      if (bmi < 18.5) {
+        tag.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Underweight (<18.5)';
+        tag.style.color = '#38bdf8';
+      } else if (bmi < 25) {
+        tag.innerHTML = '<i class="fa-solid fa-circle-check"></i> Normal Weight (18.5 - 24.9)';
+        tag.style.color = '#10b981';
+      } else if (bmi < 30) {
+        tag.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Overweight (25 - 29.9)';
+        tag.style.color = '#f59e0b';
+      } else {
+        tag.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Obese (>= 30)';
+        tag.style.color = '#f43f5e';
+      }
+    }
+
+    function updateSmokerNotice() {
+      const isSmoker = document.getElementById('ins_smoker').value === 'yes';
+      document.getElementById('smokerNotice').style.display = isSmoker ? 'block' : 'none';
+      const factorSmoker = document.getElementById('insFactorSmoker');
+      if (factorSmoker) {
+        if (isSmoker) {
+          factorSmoker.textContent = 'Active (+~$23,800)';
+          factorSmoker.className = 'factor-tag tag-high';
+        } else {
+          factorSmoker.textContent = 'None (+$0)';
+          factorSmoker.className = 'factor-tag tag-low';
+        }
+      }
+    }
+
+    function updateIncomeVal() {
+      const inc = parseFloat(document.getElementById('house_inc').value) || 8.3;
+      const actualDollars = (inc * 10000).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+      document.getElementById('house_inc_val').textContent = `${actualDollars} (${inc.toFixed(1)})`;
+    }
+
+    // Presets
+    function setInsurancePreset(age, sex, bmi, children, smoker, region) {
+      document.getElementById('ins_age').value = age;
+      updateVal('ins_age');
+      document.getElementById('ins_sex').value = sex;
+      document.getElementById('ins_bmi').value = bmi;
+      updateBmiTag();
+      document.getElementById('ins_children').value = children;
+      updateVal('ins_children');
+      document.getElementById('ins_smoker').value = smoker;
+      updateSmokerNotice();
+      document.getElementById('ins_region').value = region;
+      predictInsurance();
+    }
+
+    function setHousingPreset(lon, lat, age, rooms, beds, pop, hh, inc, ocean) {
+      document.getElementById('house_lon').value = lon;
+      document.getElementById('house_lat').value = lat;
+      document.getElementById('house_age').value = age;
+      updateVal('house_age');
+      document.getElementById('house_rooms').value = rooms;
+      document.getElementById('house_bedrooms').value = beds;
+      document.getElementById('house_pop').value = pop;
+      document.getElementById('house_hh').value = hh;
+      document.getElementById('house_inc').value = inc;
+      updateIncomeVal();
+      document.getElementById('house_ocean').value = ocean;
+      predictHousing();
+    }
+
+    let insTimeout = null;
+    function autoPredictIns() {
+      clearTimeout(insTimeout);
+      insTimeout = setTimeout(predictInsurance, 120);
+    }
+
+    let houseTimeout = null;
+    function autoPredictHouse() {
+      clearTimeout(houseTimeout);
+      houseTimeout = setTimeout(predictHousing, 120);
+    }
+
+    async function predictInsurance() {
+      const payload = {
+        age: parseFloat(document.getElementById('ins_age').value),
+        sex: document.getElementById('ins_sex').value,
+        bmi: parseFloat(document.getElementById('ins_bmi').value),
+        children: parseInt(document.getElementById('ins_children').value),
+        smoker: document.getElementById('ins_smoker').value,
+        region: document.getElementById('ins_region').value
+      };
+
+      try {
+        const res = await fetch('/api/predict/insurance', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          const val = data.raw;
+          document.getElementById('insResult').textContent = data.formatted;
+          document.getElementById('insMonthly').textContent = `$${(val / 12).toLocaleString('en-US', {maximumFractionDigits: 2})}/mo`;
+
+          const tier = document.getElementById('insRiskTier');
+          if (val > 25000) {
+            tier.textContent = 'High Risk Tier';
+            tier.style.color = '#f43f5e';
+          } else if (val > 10000) {
+            tier.textContent = 'Moderate Risk';
+            tier.style.color = '#f59e0b';
+          } else {
+            tier.textContent = 'Standard Low';
+            tier.style.color = '#10b981';
+          }
+        }
+      } catch (e) {
+        console.error("Predict error:", e);
+      }
+    }
+
+    async function predictHousing() {
+      const rooms = parseFloat(document.getElementById('house_rooms').value) || 880;
+      const hh = parseFloat(document.getElementById('house_hh').value) || 126;
+      const lon = parseFloat(document.getElementById('house_lon').value);
+      const lat = parseFloat(document.getElementById('house_lat').value);
+
+      document.getElementById('coordsPill').textContent = `Lat ${lat.toFixed(2)}, Lon ${lon.toFixed(2)}`;
+      document.getElementById('houseRpH').textContent = (rooms / hh).toFixed(2);
+
+      const payload = {
+        longitude: lon,
+        latitude: lat,
+        housing_median_age: parseFloat(document.getElementById('house_age').value),
+        total_rooms: rooms,
+        total_bedrooms: parseFloat(document.getElementById('house_bedrooms').value) || 129,
+        population: parseFloat(document.getElementById('house_pop').value) || 322,
+        households: hh,
+        median_income: parseFloat(document.getElementById('house_inc').value) || 8.3,
+        ocean_proximity: document.getElementById('house_ocean').value
+      };
+
+      try {
+        const res = await fetch('/api/predict/housing', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          const val = data.raw;
+          document.getElementById('houseResult').textContent = data.formatted;
+          // Estimate 30y mortgage payment approx at 6.5% interest
+          const loan = val * 0.8;
+          const monthlyRate = 0.065 / 12;
+          const n = 360;
+          const mortgage = loan * (monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
+          document.getElementById('houseMortgage').textContent = `$${Math.round(mortgage).toLocaleString('en-US')}/mo`;
+        }
+      } catch (e) {
+        console.error("Predict error:", e);
+      }
+    }
+
+    // Load Metrics on start
+    async function loadMetrics() {
+      try {
+        const res = await fetch('/api/metrics');
+        const data = await res.json();
+        if (data.insurance) {
+          document.getElementById('kpi-ins-r2').textContent = data.insurance.r2.toFixed(4);
+          document.getElementById('kpi-ins-mae').textContent = `$${data.insurance.mae.toLocaleString()}`;
+        }
+        if (data.housing) {
+          document.getElementById('kpi-house-r2').textContent = data.housing.r2.toFixed(4);
+          document.getElementById('kpi-house-rmse').textContent = `$${data.housing.rmse.toLocaleString()}`;
+        }
+      } catch (e) {
+        console.warn("Metrics load note:", e);
+      }
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      updateVal('ins_age');
+      updateVal('ins_children');
+      updateBmiTag();
+      updateSmokerNotice();
+      updateVal('house_age');
+      updateIncomeVal();
+      predictInsurance();
+      predictHousing();
+      loadMetrics();
+    });
+  </script>
+</body>
+</html>

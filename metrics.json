@@ -1,0 +1,225 @@
+{
+  "insurance": {
+    "name": "Insurance Charges",
+    "samples_count": 1338,
+    "test_samples": 268,
+    "mae": 4181.19,
+    "rmse": 5796.28,
+    "r2": 0.7836,
+    "train_r2": 0.7417,
+    "intercept": 20311.9281,
+    "coefficients": [
+      {
+        "feature": "smoker_no",
+        "coefficient": -11825.5644
+      },
+      {
+        "feature": "smoker_yes",
+        "coefficient": 11825.5644
+      },
+      {
+        "feature": "age",
+        "coefficient": 3614.9754
+      },
+      {
+        "feature": "bmi",
+        "coefficient": 2036.2281
+      },
+      {
+        "feature": "children",
+        "coefficient": 516.8902
+      },
+      {
+        "feature": "region_northeast",
+        "coefficient": 459.5852
+      },
+      {
+        "feature": "region_southwest",
+        "coefficient": -350.2141
+      },
+      {
+        "feature": "region_southeast",
+        "coefficient": -198.2791
+      },
+      {
+        "feature": "region_northwest",
+        "coefficient": 88.9079
+      },
+      {
+        "feature": "sex_female",
+        "coefficient": 9.2958
+      },
+      {
+        "feature": "sex_male",
+        "coefficient": -9.2958
+      }
+    ],
+    "summary": {
+      "age": {
+        "min": 18.0,
+        "max": 64.0,
+        "median": 39.0,
+        "mean": 39.20702541106129
+      },
+      "bmi": {
+        "min": 15.96,
+        "max": 53.13,
+        "median": 30.4,
+        "mean": 30.66339686098655
+      },
+      "children": {
+        "min": 0.0,
+        "max": 5.0,
+        "median": 1.0,
+        "mean": 1.0949177877429
+      },
+      "sex": {
+        "unique": [
+          "female",
+          "male"
+        ],
+        "mode": "male"
+      },
+      "smoker": {
+        "unique": [
+          "yes",
+          "no"
+        ],
+        "mode": "no"
+      },
+      "region": {
+        "unique": [
+          "southwest",
+          "southeast",
+          "northwest",
+          "northeast"
+        ],
+        "mode": "southeast"
+      }
+    }
+  },
+  "housing": {
+    "name": "California Housing",
+    "samples_count": 20640,
+    "test_samples": 4128,
+    "mae": 50670.49,
+    "rmse": 70059.19,
+    "r2": 0.6254,
+    "train_r2": 0.6497,
+    "intercept": 238826.3594,
+    "coefficients": [
+      {
+        "feature": "ocean_proximity_ISLAND",
+        "coefficient": 117198.4898
+      },
+      {
+        "feature": "median_income",
+        "coefficient": 75167.7748
+      },
+      {
+        "feature": "ocean_proximity_INLAND",
+        "coefficient": -58713.239
+      },
+      {
+        "feature": "latitude",
+        "coefficient": -54415.6961
+      },
+      {
+        "feature": "longitude",
+        "coefficient": -53826.648
+      },
+      {
+        "feature": "population",
+        "coefficient": -43403.4324
+      },
+      {
+        "feature": "total_bedrooms",
+        "coefficient": 43068.1818
+      },
+      {
+        "feature": "ocean_proximity_NEAR BAY",
+        "coefficient": -24063.2251
+      },
+      {
+        "feature": "ocean_proximity_<1H OCEAN",
+        "coefficient": -18926.5829
+      },
+      {
+        "feature": "households",
+        "coefficient": 18382.1963
+      },
+      {
+        "feature": "ocean_proximity_NEAR OCEAN",
+        "coefficient": -15495.4428
+      },
+      {
+        "feature": "housing_median_age",
+        "coefficient": 13889.8662
+      },
+      {
+        "feature": "total_rooms",
+        "coefficient": -13094.2512
+      }
+    ],
+    "summary": {
+      "longitude": {
+        "min": -124.35,
+        "max": -114.31,
+        "median": -118.49,
+        "mean": -119.56970445736432
+      },
+      "latitude": {
+        "min": 32.54,
+        "max": 41.95,
+        "median": 34.26,
+        "mean": 35.63186143410852
+      },
+      "housing_median_age": {
+        "min": 1.0,
+        "max": 52.0,
+        "median": 29.0,
+        "mean": 28.639486434108527
+      },
+      "total_rooms": {
+        "min": 2.0,
+        "max": 39320.0,
+        "median": 2127.0,
+        "mean": 2635.7630813953488
+      },
+      "total_bedrooms": {
+        "min": 1.0,
+        "max": 6445.0,
+        "median": 435.0,
+        "mean": 537.8705525375618
+      },
+      "population": {
+        "min": 3.0,
+        "max": 35682.0,
+        "median": 1166.0,
+        "mean": 1425.4767441860465
+      },
+      "households": {
+        "min": 1.0,
+        "max": 6082.0,
+        "median": 409.0,
+        "mean": 499.5396802325581
+      },
+      "median_income": {
+        "min": 0.4999,
+        "max": 15.0001,
+        "median": 3.5347999999999997,
+        "mean": 3.8706710029069766
+      },
+      "ocean_proximity": {
+        "unique": [
+          "NEAR BAY",
+          "<1H OCEAN",
+          "INLAND",
+          "NEAR OCEAN",
+          "ISLAND"
+        ],
+        "mode": "<1H OCEAN"
+      }
+    }
+  }
+}
